@@ -10,33 +10,62 @@
 
 package com.example.project;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 class CalculatorTests {
 
+    private Stack stack = new Stack();
+
     @Test
-    @DisplayName("1 + 1 = 2")
-    void addsTwoNumbers() {
-        Calculator calculator = new Calculator();
-        assertEquals(2, calculator.add(1, 1), "1 + 1 should equal 2");
+    public void canCreateStack() throws Exception {
+        assertTrue(stack.isEmpty());
     }
 
-    @ParameterizedTest(name = "{0} + {1} = {2}")
-    @CsvSource({
-            "0,    1,   1",
-            "1,    2,   3",
-            "49,  51, 100",
-            "1,  100, 101"
-    })
-    void add(int first, int second, int expectedResult) {
-        Calculator calculator = new Calculator();
-        assertEquals(expectedResult, calculator.add(first, second),
-                () -> first + " + " + second + " should equal " + expectedResult);
+    @Test
+    public void afterOnePush_stackIsNotEmpty() throws Exception {
+        stack.push(1);
+        assertFalse(stack.isEmpty());
+        assertEquals(1, stack.getSize());
     }
 
+    @Test
+    public void afterOnePushOnePop_stackIsEmpty() throws Exception {
+        stack.push(1);
+        stack.pop();
+        assertTrue(stack.isEmpty());
+        assertEquals(0, stack.getSize());
+    }
+
+    @Test
+    public void afterTwoPushes_stackSizeIsTwo() throws Exception {
+        stack.push(1);
+        stack.push(2);
+        assertEquals(2, stack.getSize());
+    }
+
+    @Test
+    public void poppingFromEmptyStackThrowsUnderflow() throws Exception {
+        assertThrows(Stack.Underflow.class, () -> stack.pop());
+    }
+
+    @Test
+    public void afterPushingX_willPopX() throws Exception {
+        stack.push(42);
+        assertEquals(42, stack.pop());
+        stack.push(300);
+        assertEquals(300, stack.pop());
+    }
+
+    @Test
+    public void afterPushingXandY_thenWillPopYThenX() throws Exception {
+        stack.push(42);
+        stack.push(300);
+        assertEquals(300, stack.pop());
+        assertEquals(42, stack.pop());
+    }
 }
