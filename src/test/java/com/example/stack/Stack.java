@@ -4,6 +4,7 @@ public class Stack {
 
     private boolean empty = true;
     private int size = 0;
+    private int[] elements = new int[2];
 
     public boolean isEmpty() {
         // return false;
@@ -12,8 +13,7 @@ public class Stack {
     }
 
     public void push(int element) {
-        empty = false;
-        size++;
+        this.elements[size++] = element;
     }
 
     public int pop() {
@@ -23,8 +23,7 @@ public class Stack {
         if (size == 0) {
             throw new Underflow();
         }
-        --size;
-        return 99;
+        return elements[--size];
     }
 
     public int getSize() {
